@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CraveCart — Online Food Ordering UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+:root{color-scheme:light;}
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-muted: #f3f4f6;
+  --text-main: #111827;
+  --text-muted: #4b5563;
+  --primary: #e23744;
+  --primary-dark: #c82333;
+  --primary-soft: #fff1f2;
+  --veg-green: #15803d;
+  --nonveg-red: #b91c1c;
+  --border: #e5e7eb;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 2px 8px rgba(17, 24, 39, 0.05);
+  --shadow-md: 0 10px 25px rgba(17, 24, 39, 0.08);
+  --shadow-lg: 0 20px 40px rgba(17, 24, 39, 0.16);
+  --transition: 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+.container {
+  width: min(1200px, 92%);
+  margin: 0 auto;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 74px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.brand-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+}
+
+.brand-name span {
+  color: var(--primary);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.search-box input {
+  width: 230px;
+  padding: 0.58rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.search-box input:focus {
+  border-color: var(--primary);
+  background: #fff;
+}
+
+.cart-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--text-main);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.05rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.cart-trigger:hover {
+  background: var(--primary);
+}
+
+.cart-count {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.cart-trigger:hover .cart-count {
+  background: #fff;
+  color: var(--primary);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.78rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-outline {
+  background: #fff;
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+.btn-outline:hover {
+  border-color: var(--text-main);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.hero {
+  padding: 4rem 0 3rem;
+  background: linear-gradient(180deg, #fff5f5 0%, var(--bg) 100%);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.pill-tag {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-content h1 {
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 54ch;
+  margin-bottom: 1.75rem;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-bottom: 2.25rem;
+}
+
+.hero-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.hero-metrics strong {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.hero-metrics span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.featured-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  background: #fff;
+}
+
+.featured-card img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+}
+
+.featured-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(17, 24, 39, 0.88);
+  color: #fff;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.categories-section,
+.menu-section,
+.steps-section {
+  padding: 2.75rem 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-header.center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.section-header h2 {
+  font-size: 1.65rem;
+  letter-spacing: -0.01em;
+}
+
+.section-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.category-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.category-pill {
+  padding: 0.6rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.category-pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.category-pill.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.veg-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 1.5rem;
+}
+
+.food-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.food-thumb {
+  position: relative;
+  height: 185px;
+  overflow: hidden;
+  background: var(--surface-muted);
+}
+
+.food-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.diet-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.diet-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.diet-dot.veg {
+  background: var(--veg-green);
+}
+
+.diet-dot.nonveg {
+  background: var(--nonveg-red);
+}
+
+.rating-pill {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background: rgba(17, 24, 39, 0.85);
+  color: #fff;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.food-body {
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.food-meta {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.food-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.food-desc {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin-bottom: 1.1rem;
+  flex: 1;
+}
+
+.food-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.food-price {
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.btn-sm {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.82rem;
+  border-radius: 7px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
+}
+
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.4rem;
+}
+
+.step-num {
+  display: inline-block;
+  font-weight: 800;
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.step-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+}
+
+.step-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.footer {
+  background: #111827;
+  color: #d1d5db;
+  padding: 3rem 0;
+  margin-top: 2rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.footer-brand .brand-name {
+  color: #fff;
+}
+
+.footer-note {
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  max-width: 44ch;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-links h4 {
+  color: #fff;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+
+.footer-links a,
+.footer-links span {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.6);
+  display: none;
+  place-items: center;
+  padding: 1rem;
+  z-index: 100;
+}
+
+.modal-backdrop.open {
+  display: grid;
+}
+
+.modal-card {
+  position: relative;
+  background: #fff;
+  width: min(640px, 100%);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.modal-hero-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.modal-info {
+  padding: 1.5rem;
+}
+
+.modal-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  background: var(--surface-muted);
+  padding: 0.9rem;
+  border-radius: var(--radius-sm);
+  margin: 1rem 0;
+  font-size: 0.85rem;
+}
+
+.modal-specs strong {
+  display: block;
+  color: var(--text-main);
+}
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.5);
+  display: none;
+  z-index: 90;
+}
+
+.drawer-backdrop.open {
+  display: block;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: min(400px, 100vw);
+  height: 100vh;
+  background: #fff;
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  transition: right 0.25s ease;
+}
+
+.cart-drawer.open {
+  right: 0;
+}
+
+.cart-header {
+  padding: 1.25rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.cart-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cart-item-info h4 {
+  font-size: 0.95rem;
+}
+
+.cart-item-info span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.qty-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface-muted);
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+}
+
+.qty-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #fff;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cart-footer {
+  padding: 1.25rem 1.4rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.45rem;
+  color: var(--text-muted);
+}
+
+.bill-row.total {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  padding-top: 0.5rem;
+  margin-bottom: 1rem;
+  border-top: 1px dashed var(--border);
+}
+
+.checkout-content {
+  padding: 2rem 1.75rem;
+  text-align: center;
+}
+
+.demo-notice {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin: 1rem 0 1.25rem;
+  text-align: left;
+}
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #111827;
+  color: #fff;
+  padding: 0.7rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  z-index: 120;
+  transition: transform 0.25s ease;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 900px) {
+  .hero-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .search-box input {
+    width: 145px;
+  }
+
+  .featured-card img {
+    height: 240px;
+  }
+
+  .modal-specs {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+</head>
+<body>
+  <header class="navbar" id="top">
+    <div class="container nav-container">
+      <a href="#top" class="brand">
+        <span class="brand-badge">CC</span>
+        <span class="brand-name">Crave<span>Cart</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#menu" class="nav-link">Menu</a>
+        <a href="#about" class="nav-link">How It Works</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search dishes or ingredients..." aria-label="Search menu" />
+        </div>
+        <button class="cart-trigger" id="openCartBtn" aria-label="Open order review cart">
+          <span>Order Review</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <span class="pill-tag">Fast • Fresh • UI Prototype</span>
+          <h1>Freshly prepared meals, ordered in seconds.</h1>
+          <p>
+            Explore curated categories, inspect dish ingredients and portion details, and review your complete order seamlessly before checkout.
+          </p>
+          <div class="hero-cta">
+            <a href="#menu" class="btn btn-primary">Explore Menu</a>
+            <a href="#categories" class="btn btn-outline">Browse Categories</a>
+          </div>
+          <div class="hero-metrics">
+            <div>
+              <strong>25–30 min</strong>
+              <span>Avg. Delivery Time</span>
+            </div>
+            <div>
+              <strong>100% Fresh</strong>
+              <span>Prepared on Order</span>
+            </div>
+            <div>
+              <strong>4.8 ★</strong>
+              <span>Customer Rating</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="featured-card">
+            <img src="" alt="Wood-fired artisan pizza" id="heroImg" />
+            <div class="featured-badge">Chef's Special • ₹349</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories-section" id="categories">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2>Browse by Category</h2>
+            <p>Filter the menu by your preferred cuisine or meal type</p>
+          </div>
+        </div>
+        <div class="category-bar" id="categoryBar" role="tablist" aria-label="Food Categories"></div>
+      </div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="container">
+        <div class="section-header menu-header">
+          <div>
+            <h2 id="menuTitle">All Menu Items</h2>
+            <p id="menuSubtitle">Showing all available dishes</p>
+          </div>
+          <div class="filter-controls">
+            <label class="veg-toggle">
+              <input type="checkbox" id="vegOnlyToggle" />
+              <span>Pure Veg Only</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="menu-grid" id="menuGrid"></div>
+      </div>
+    </section>
+
+    <section class="steps-section" id="about">
+      <div class="container">
+        <div class="section-header center">
+          <h2>Simple 4-Step Ordering Flow</h2>
+          <p>Designed for clarity, speed, and zero visual clutter</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">01</span>
+            <h3>Discover</h3>
+            <p>Scan clean categories or use instant search to find what you are craving.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">02</span>
+            <h3>Inspect Details</h3>
+            <p>View full ingredients, portion size, prep time, and dietary tags before choosing.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">03</span>
+            <h3>Review Selection</h3>
+            <p>Adjust quantities and verify itemised pricing in the live Order Review drawer.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">04</span>
+            <h3>Order Confirmation</h3>
+            <p>Preview the final order summary screen with instant prototype feedback.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand footer-brand">
+          <span class="brand-badge">CC</span>
+          <span class="brand-name">Crave<span>Cart</span></span>
+        </div>
+        <p class="footer-note">
+          Frontend UI Prototype developed by <strong>Krishna Kumar</strong> (Chandigarh University) during internship at <strong>GadGet Technology Services</strong> under the <strong>Appplus Web Team</strong>.
+        </p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Navigation</h4>
+        <a href="#home">Home</a>
+        <a href="#categories">Categories</a>
+        <a href="#menu">Food Menu</a>
+      </div>
+      <div class="footer-links">
+        <h4>Prototype Scope</h4>
+        <span>Frontend Presentation Layer</span>
+        <span>Responsive Multi-Device Grid</span>
+        <span>Interactive Cart &amp; Details View</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="itemModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalDishTitle">
+      <button class="modal-close" id="closeItemModal" aria-label="Close item details">&times;</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="drawer-backdrop" id="cartBackdrop" aria-hidden="true"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Order Review Cart">
+    <div class="cart-header">
+      <div>
+        <h3>Order Review</h3>
+        <p>Verify items and quantities</p>
+      </div>
+      <button class="modal-close" id="closeCartBtn" aria-label="Close cart">&times;</button>
+    </div>
+
+    <div class="cart-items" id="cartItemsContainer"></div>
+
+    <div class="cart-footer" id="cartFooter">
+      <div class="bill-row">
+        <span>Item Subtotal</span>
+        <span id="subtotalAmount">₹0</span>
+      </div>
+      <div class="bill-row">
+        <span>Taxes &amp; Packaging (5%)</span>
+        <span id="taxAmount">₹0</span>
+      </div>
+      <div class="bill-row total">
+        <span>Estimated Total</span>
+        <span id="totalAmount">₹0</span>
+      </div>
+      <button class="btn btn-primary btn-full" id="proceedCheckoutBtn">Proceed to Checkout Preview</button>
+    </div>
+  </aside>
+
+  <div class="modal-backdrop" id="checkoutModal" aria-hidden="true">
+    <div class="modal-card checkout-card" role="dialog" aria-modal="true">
+      <button class="modal-close" id="closeCheckoutModal" aria-label="Close checkout preview">&times;</button>
+      <div class="checkout-content" id="checkoutContent"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+function art(e,a,b){const s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="800" height="600" fill="url(#g)"/><text x="400" y="360" font-size="220" text-anchor="middle">${e}</text></svg>`;return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s);}
+const MENU_ITEMS = [
+  {
+    id: 1,
+    name: "Margherita Artisan Pizza",
+    category: "Pizza",
+    price: 349,
+    veg: true,
+    rating: "4.8",
+    prepTime: "20 mins",
+    portion: "10-inch (6 Slices)",
+    calories: "680 kcal",
+    image: art("🍕","#f97316","#fbbf24"),
+    shortDesc: "Hand-stretched sourdough crust topped with San Marzano tomato sauce, fresh mozzarella, and basil.",
+    ingredients: "Sourdough flour, crushed tomatoes, fresh buffalo mozzarella, extra virgin olive oil, sweet basil."
+  },
+  {
+    id: 2,
+    name: "Paneer Tikka Masala Bowl",
+    category: "North Indian",
+    price: 279,
+    veg: true,
+    rating: "4.7",
+    prepTime: "25 mins",
+    portion: "550g Full Bowl",
+    calories: "620 kcal",
+    image: art("🍛","#dc2626","#f59e0b"),
+    shortDesc: "Char-grilled cottage cheese cubes simmered in rich spiced tomato gravy, served with jeera rice.",
+    ingredients: "Cottage cheese (paneer), aromatic basmati rice, tomato-cashew gravy, bell peppers, garam masala."
+  },
+  {
+    id: 3,
+    name: "Crispy Herb Chicken Burger",
+    category: "Burgers",
+    price: 249,
+    veg: false,
+    rating: "4.6",
+    prepTime: "18 mins",
+    portion: "1 Burger + Fries",
+    calories: "740 kcal",
+    image: art("🍔","#b45309","#f59e0b"),
+    shortDesc: "Golden herb-crusted chicken fillet layered with cheddar, crisp lettuce, and smoky garlic aioli.",
+    ingredients: "Brioche bun, spiced chicken breast, aged cheddar, iceberg lettuce, gherkins, garlic herb mayo."
+  },
+  {
+    id: 4,
+    name: "Hyderabadi Dum Biryani",
+    category: "North Indian",
+    price: 329,
+    veg: false,
+    rating: "4.9",
+    prepTime: "30 mins",
+    portion: "650g Handi",
+    calories: "790 kcal",
+    image: art("🍲","#92400e","#eab308"),
+    shortDesc: "Slow-cooked saffron basmati rice layered with marinated chicken, caramelized onions, and mint.",
+    ingredients: "Aged basmati rice, tender chicken, saffron milk, fried shallots, fresh mint, roasted spices, raita."
+  },
+  {
+    id: 5,
+    name: "Smoky BBQ Veggie Burger",
+    category: "Burgers",
+    price: 219,
+    veg: true,
+    rating: "4.5",
+    prepTime: "15 mins",
+    portion: "1 Burger + Wedges",
+    calories: "590 kcal",
+    image: art("🥬","#15803d","#84cc16"),
+    shortDesc: "Roasted black bean and sweet corn patty glazed with house smoky BBQ sauce on a toasted sesame bun.",
+    ingredients: "Sesame bun, black beans, sweet corn, jalapeños, smoky BBQ glaze, crunchy coleslaw."
+  },
+  {
+    id: 6,
+    name: "Penne Arrabbiata Pasta",
+    category: "Pasta",
+    price: 269,
+    veg: true,
+    rating: "4.6",
+    prepTime: "18 mins",
+    portion: "450g Plate",
+    calories: "540 kcal",
+    image: art("🍝","#be123c","#fb923c"),
+    shortDesc: "Al dente durum wheat penne tossed in garlic-infused spicy marinara with black olives and parmesan.",
+    ingredients: "Durum wheat penne, plum tomatoes, roasted garlic, red chili flakes, Kalamata olives, parmesan."
+  },
+  {
+    id: 7,
+    name: "Pepperoni Farmhouse Pizza",
+    category: "Pizza",
+    price: 419,
+    veg: false,
+    rating: "4.8",
+    prepTime: "22 mins",
+    portion: "10-inch (6 Slices)",
+    calories: "820 kcal",
+    image: art("🍕","#9f1239","#f97316"),
+    shortDesc: "Loaded with spiced chicken pepperoni, roasted mushrooms, mozzarella, and oregano.",
+    ingredients: "Hand-tossed crust, chicken pepperoni, mozzarella cheese, button mushrooms, signature pizza sauce."
+  },
+  {
+    id: 8,
+    name: "Belgian Dark Chocolate Brownie",
+    category: "Desserts",
+    price: 159,
+    veg: true,
+    rating: "4.9",
+    prepTime: "10 mins",
+    portion: "140g Warm Slice",
+    calories: "430 kcal",
+    image: art("🍫","#44200f","#a16207"),
+    shortDesc: "Fudgy 70% dark chocolate walnut brownie served warm with a drizzle of roasted hazelnut ganache.",
+    ingredients: "70% Belgian dark couverture chocolate, toasted walnuts, butter, cocoa powder, cane sugar."
+  }
+];
+
+</script>
+  <script>
+document.getElementById('heroImg').src=art('🍕','#f97316','#fbbf24');
+let activeCategory = "All";
+let searchQuery = "";
+let vegOnly = false;
+let cart = [];
+
+const categoryBar = document.getElementById("categoryBar");
+const menuGrid = document.getElementById("menuGrid");
+const menuTitle = document.getElementById("menuTitle");
+const menuSubtitle = document.getElementById("menuSubtitle");
+const searchInput = document.getElementById("searchInput");
+const vegOnlyToggle = document.getElementById("vegOnlyToggle");
+
+const itemModal = document.getElementById("itemModal");
+const modalBody = document.getElementById("modalBody");
+const closeItemModal = document.getElementById("closeItemModal");
+
+const cartDrawer = document.getElementById("cartDrawer");
+const cartBackdrop = document.getElementById("cartBackdrop");
+const openCartBtn = document.getElementById("openCartBtn");
+const closeCartBtn = document.getElementById("closeCartBtn");
+const cartCount = document.getElementById("cartCount");
+const cartItemsContainer = document.getElementById("cartItemsContainer");
+const subtotalAmount = document.getElementById("subtotalAmount");
+const taxAmount = document.getElementById("taxAmount");
+const totalAmount = document.getElementById("totalAmount");
+const proceedCheckoutBtn = document.getElementById("proceedCheckoutBtn");
+
+const checkoutModal = document.getElementById("checkoutModal");
+const checkoutContent = document.getElementById("checkoutContent");
+const closeCheckoutModal = document.getElementById("closeCheckoutModal");
+const toast = document.getElementById("toast");
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+function renderCategories() {
+  const categories = ["All", ...new Set(MENU_ITEMS.map((item) => item.category))];
+  categoryBar.innerHTML = categories
+    .map(
+      (cat) => `
+      <button
+        class="category-pill ${cat === activeCategory ? "active" : ""}"
+        data-category="${cat}"
+        role="tab"
+        aria-selected="${cat === activeCategory}"
+      >
+        ${cat}
+      </button>
+    `
+    )
+    .join("");
+
+  categoryBar.querySelectorAll(".category-pill").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeCategory = btn.dataset.category;
+      renderCategories();
+      renderMenu();
+    });
+  });
+}
+
+function renderMenu() {
+  const filtered = MENU_ITEMS.filter((item) => {
+    const matchesCategory = activeCategory === "All" || item.category === activeCategory;
+    const matchesVeg = !vegOnly || item.veg;
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchQuery) ||
+      item.shortDesc.toLowerCase().includes(searchQuery) ||
+      item.category.toLowerCase().includes(searchQuery);
+    return matchesCategory && matchesVeg && matchesSearch;
+  });
+
+  menuTitle.textContent = activeCategory === "All" ? "All Menu Items" : `${activeCategory} Menu`;
+  menuSubtitle.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? "dish" : "dishes"}`;
+
+  if (filtered.length === 0) {
+    menuGrid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: #fff; border-radius: 14px; border: 1px solid #e5e7eb;">
+        <h3>No matching dishes found</h3>
+        <p style="color: #6b7280; margin-top: 0.4rem;">Try clearing your search filter or switching categories.</p>
+      </div>
+    `;
+    return;
+  }
+
+  menuGrid.innerHTML = filtered
+    .map(
+      (item) => `
+      <article class="food-card">
+        <div class="food-thumb">
+          <img src="${item.image}" alt="${item.name}" loading="lazy" />
+          <span class="diet-badge">
+            <span class="diet-dot ${item.veg ? "veg" : "nonveg"}"></span>
+            ${item.veg ? "Veg" : "Non-Veg"}
+          </span>
+          <span class="rating-pill">★ ${item.rating}</span>
+        </div>
+        <div class="food-body">
+          <span class="food-meta">${item.category} • ${item.prepTime}</span>
+          <h3 class="food-title">${item.name}</h3>
+          <p class="food-desc">${item.shortDesc}</p>
+          <div class="food-footer">
+            <span class="food-price">₹${item.price}</span>
+            <div class="card-actions">
+              <button class="btn btn-outline btn-sm" onclick="openItemDetails(${item.id})">Details</button>
+              <button class="btn btn-primary btn-sm" onclick="addToCart(${item.id})">+ Add</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    `
+    )
+    .join("");
+}
+
+function openItemDetails(id) {
+  const item = MENU_ITEMS.find((entry) => entry.id === id);
+  if (!item) return;
+
+  modalBody.innerHTML = `
+    <img class="modal-hero-img" src="${item.image}" alt="${item.name}" />
+    <div class="modal-info">
+      <span class="food-meta">${item.category} • ${item.veg ? "Pure Vegetarian" : "Non-Vegetarian"}</span>
+      <h2 id="modalDishTitle" style="margin: 0.25rem 0 0.5rem;">${item.name}</h2>
+      <p style="color: #4b5563; font-size: 0.95rem;">${item.shortDesc}</p>
+
+      <div class="modal-specs">
+        <div><span>Portion Size</span><strong>${item.portion}</strong></div>
+        <div><span>Prep Time</span><strong>${item.prepTime}</strong></div>
+        <div><span>Energy</span><strong>${item.calories}</strong></div>
+      </div>
+
+      <p style="font-size: 0.9rem; margin-bottom: 1.25rem;">
+        <strong>Key Ingredients:</strong> <span style="color: #4b5563;">${item.ingredients}</span>
+      </p>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+        <span style="font-size: 1.35rem; font-weight: 800;">₹${item.price}</span>
+        <button class="btn btn-primary" onclick="addToCart(${item.id}); closeDetailsModal();">
+          Add to Order Review
+        </button>
+      </div>
+    </div>
+  `;
+
+  itemModal.classList.add("open");
+  itemModal.setAttribute("aria-hidden", "false");
+}
+
+function closeDetailsModal() {
+  itemModal.classList.remove("open");
+  itemModal.setAttribute("aria-hidden", "true");
+}
+
+function addToCart(id) {
+  const item = MENU_ITEMS.find((entry) => entry.id === id);
+  if (!item) return;
+
+  const existing = cart.find((entry) => entry.id === id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ ...item, qty: 1 });
+  }
+
+  updateCartUI();
+  showToast(`Added "${item.name}" to Order Review`);
+}
+
+function updateQuantity(id, delta) {
+  const index = cart.findIndex((entry) => entry.id === id);
+  if (index === -1) return;
+
+  cart[index].qty += delta;
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  cartCount.textContent = totalItems;
+
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = `
+      <div style="text-align: center; padding: 3rem 1rem; color: #6b7280;">
+        <p style="font-weight: 700; color: #111827; margin-bottom: 0.35rem;">Your order review list is empty</p>
+        <p style="font-size: 0.9rem;">Select items from the menu to inspect quantities and pricing.</p>
+      </div>
+    `;
+    subtotalAmount.textContent = "₹0";
+    taxAmount.textContent = "₹0";
+    totalAmount.textContent = "₹0";
+    proceedCheckoutBtn.disabled = true;
+    proceedCheckoutBtn.style.opacity = "0.5";
+    return;
+  }
+
+  proceedCheckoutBtn.disabled = false;
+  proceedCheckoutBtn.style.opacity = "1";
+
+  cartItemsContainer.innerHTML = cart
+    .map(
+      (item) => `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <h4>${item.name}</h4>
+          <span>₹${item.price} &times; ${item.qty} = <strong>₹${item.price * item.qty}</strong></span>
+        </div>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)" aria-label="Decrease quantity">-</button>
+          <span>${item.qty}</span>
+          <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)" aria-label="Increase quantity">+</button>
+        </div>
+      </div>
+    `
+    )
+    .join("");
+
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const tax = Math.round(subtotal * 0.05);
+  const total = subtotal + tax;
+
+  subtotalAmount.textContent = `₹${subtotal}`;
+  taxAmount.textContent = `₹${tax}`;
+  totalAmount.textContent = `₹${total}`;
+}
+
+function toggleCart(open) {
+  cartDrawer.classList.toggle("open", open);
+  cartBackdrop.classList.toggle("open", open);
+  cartDrawer.setAttribute("aria-hidden", String(!open));
+}
+
+searchInput.addEventListener("input", (e) => {
+  searchQuery = e.target.value.trim().toLowerCase();
+  renderMenu();
+});
+
+vegOnlyToggle.addEventListener("change", (e) => {
+  vegOnly = e.target.checked;
+  renderMenu();
+});
+
+closeItemModal.addEventListener("click", closeDetailsModal);
+itemModal.addEventListener("click", (e) => {
+  if (e.target === itemModal) closeDetailsModal();
+});
+
+openCartBtn.addEventListener("click", () => toggleCart(true));
+closeCartBtn.addEventListener("click", () => toggleCart(false));
+cartBackdrop.addEventListener("click", () => toggleCart(false));
+
+proceedCheckoutBtn.addEventListener("click", () => {
+  if (cart.length === 0) return;
+  toggleCart(false);
+
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const total = subtotal + Math.round(subtotal * 0.05);
+
+  checkoutContent.innerHTML = `
+    <span class="pill-tag">UI Prototype Step</span>
+    <h2>Order Summary Preview</h2>
+    <p style="color: #4b5563; margin-top: 0.4rem;">
+      Your selection of <strong>${cart.reduce((s, i) => s + i.qty, 0)} item(s)</strong> totaling <strong>₹${total}</strong> is ready.
+    </p>
+    <div class="demo-notice">
+      <strong>Prototype Scope Notice:</strong> This is a frontend UI demonstration. Live payment gateways, backend database storage, and delivery partner dispatch are outside the scope of this UI build.
+    </div>
+    <button class="btn btn-primary btn-full" id="resetDemoBtn">Complete Preview &amp; Clear Selection</button>
+  `;
+
+  checkoutModal.classList.add("open");
+  checkoutModal.setAttribute("aria-hidden", "false");
+
+  document.getElementById("resetDemoBtn").addEventListener("click", () => {
+    cart = [];
+    updateCartUI();
+    checkoutModal.classList.remove("open");
+    showToast("Demo flow completed");
+  });
+});
+
+closeCheckoutModal.addEventListener("click", () => {
+  checkoutModal.classList.remove("open");
+});
+
+renderCategories();
+renderMenu();
+updateCartUI();
+
+</script>
+</body>
+</html>
